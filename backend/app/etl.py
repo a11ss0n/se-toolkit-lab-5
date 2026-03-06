@@ -199,7 +199,12 @@ async def load_logs(
         student_id = str(log["student_id"])
         group = log.get("group", "")
 
-        learner = await session.get(Learner, student_id)
+        # Search by external_id (str), not by id (int)
+        learner_result = await session.exec(
+            select(Learner).where(Learner.external_id == student_id)
+        )
+        learner = learner_result.first()
+
         if learner is None:
             learner = Learner(
                 external_id=student_id,

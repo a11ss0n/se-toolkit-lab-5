@@ -59,3 +59,29 @@ tr:nth-child(even) {
   padding: 0.25rem 0.75rem;
   font-size: 0.85rem;
 }
+
+/* Navigation */
+
+.app-nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.app-nav button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.app-nav button:hover {
+  background: #f0f0f0;
+}
+
+.app-nav button.active {
+  background: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}

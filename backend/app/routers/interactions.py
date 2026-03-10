@@ -11,6 +11,17 @@ from app.models.interaction import InteractionLog, InteractionLogCreate, Interac
 router = APIRouter()
 
 
+def _to_interaction_model(log: InteractionLog) -> InteractionModel:
+    """Convert InteractionLog from DB to InteractionModel for response."""
+    return InteractionModel(
+        id=log.id,
+        learner_id=log.learner_id,
+        item_id=log.item_id,
+        kind=log.kind,
+        timestamp=log.created_at,
+    )
+
+
 def _filter_by_item_id(
     interactions: list[InteractionLog], item_id: int | None
 ) -> list[InteractionLog]:
@@ -26,7 +37,8 @@ async def get_interactions(
 ):
     """Get all interactions, optionally filtered by item."""
     interactions = await read_interactions(session)
-    return _filter_by_item_id(interactions, item_id)
+    filtered = _filter_by_item_id(interactions, item_id)
+    return [_to_interaction_model(log) for log in filtered]
 
 
 @router.post("/", response_model=InteractionLog, status_code=201)
